@@ -20,28 +20,33 @@ AjaxLoader.prototype={
 		Post:function(waPayLoad,successHandler,failHandler){
 			this.successHandler=successHandler;
 			this.failHandler=failHandler;
-			this._loader.onreadystatechange=this.OnStateChange();
-			this._loader.open("POST", "http://localhost:8080/TestSpringMVC/getwgt", true);
-			this._loader.send("waName="+waPayLoad);
+			var self=this;
+			this._loader.onreadystatechange=function(){
+				try{
+				if(self._loader.readyState==4 && self._loader.status==200)
+				{
+					console.log(self._loader.responseText);
+					if(self.successHandler!=null){
+						self.successHandler(self._loader.responseText);
+					}
+					
+				}
+				else if(self._loader.status == 404){
+					console.log(self._loader.responseText);
+					if(self.failHandler!=null){
+						self.failHandler(self._loader.responseText);
+					}
+						
+				}
+				}
+				catch(e){
+					console.log(e);
+				}
+			};
+			this._loader.open("GET", "http://localhost:8080/TestSpringMVC/getwgt?waName="+waPayLoad, true);
+			this._loader.send();
 		},
 		
-		OnStateChange:function(){
-			
-			if(this._loader.readyState==4 && this._loader.status==200)
-			{
-				if(this.successHandler!=null){
-					this.successHandler(this._loader.responseText);
-				}
-				
-			}
-			else if(this._loader.status == 404){
-				console.log(this._loader.responseText);
-				if(this.failHandler!=null){
-					this.failHandler(this._loader.responseText);
-				}
-					
-			}
-		}
 };
 
 

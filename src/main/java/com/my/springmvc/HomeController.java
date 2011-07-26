@@ -36,7 +36,7 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value="/getwgt",method=RequestMethod.POST)
+	@RequestMapping(value="/getwgt",method=RequestMethod.GET)
 	public @ResponseBody String LoadWebAnalysisWidget(@RequestParam("waName") String widgetName){
 		return "<div>hi this is loaded from web</div>";
 	}

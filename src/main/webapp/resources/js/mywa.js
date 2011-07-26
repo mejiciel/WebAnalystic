@@ -1,12 +1,15 @@
-var xjs1=document.createElement("script");
+/*var xjs1=document.createElement("script");
 
 xjs1.type="text/javascript";
 xjs1.src='/TestSpringMVC/resources/js/AjaxLoader.js';
 
-document.getElementsByTagName("head")[0].appendChild(xjs1);
+var y=document.getElementsByTagName("head")[0];
+document.getElementsByTagName("head")[0].insertBefore(xjs1,document.getElementsByTagName("head")[0].childNodes[1]);*/
+document.write("<script type='text/javascript' src='/TestSpringMVC/resources/js/AjaxLoader.js'></script>");
 function WALoader(){
 	this.AnalysisWidgetList=[];
 	this.WASTYLETITLE="WA_SPC_RULES";
+	this.ajaxloaderArr=[];
 	//this.ajaxFactory=new AjaxLoaderFactory();
 };
 
@@ -80,11 +83,12 @@ WALoader.prototype={
 	
 	RemoteGetContent:function(eleName){
 		var ajaxLoader=new AjaxLoader();
+		var self=this;
 		ajaxLoader.Post(eleName,function(theInnerHtml){
-			
-			document.getElementById(elemName).innerHTML=theInnerHtml;
-			this.ShowAnalysisWidgets(elemName);
+			document.getElementById(eleName).innerHTML=theInnerHtml;
+			self.ShowAnalysisWidgets(eleName);
 		});
+		this.ajaxloaderArr.push(ajaxLoader);
 		
 	},
 	
