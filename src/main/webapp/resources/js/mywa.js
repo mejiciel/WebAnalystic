@@ -1,13 +1,19 @@
-//document.write("<script type='text/javascript' src='resources/js/collection.js'></script>");
+var xjs1=document.createElement("script");
+
+xjs1.type="text/javascript";
+xjs1.src='/TestSpringMVC/resources/js/AjaxLoader.js';
+
+document.getElementsByTagName("head")[0].appendChild(xjs1);
 function WALoader(){
 	this.AnalysisWidgetList=[];
 	this.WASTYLETITLE="WA_SPC_RULES";
+	//this.ajaxFactory=new AjaxLoaderFactory();
 };
 
 WALoader.prototype={
 	registerAnalysisWidget:function (htmlElementName)
 	{
-		mywa.AnalysisWidgetList.push(htmlElementName);
+		this.AnalysisWidgetList.push(htmlElementName);
 	},
 	
 	LoadAnalysisWidget:function(analysisWidgets)
@@ -15,20 +21,27 @@ WALoader.prototype={
 		
 		if(mywa.AnalysisWidgetList.length<1)
 		{
-			mywa.AnalysisWidgetList=analysisWidgets;
+			this.AnalysisWidgetList=analysisWidgets;
 		}
 		
 		var newStyleElm=document.createElement("style");
 		newStyleElm.title=this.WASTYLETITLE;
 		var s="";
-		for(eleName in mywa.AnalysisWidgetList)
+		for(var i in this.AnalysisWidgetList)
 		{
 			
-			s+=mywa.getHideCss(mywa.AnalysisWidgetList[eleName]);
+			s+=this.getHideCss(this.AnalysisWidgetList[i]);
 			
 		}
 		newStyleElm.innerHTML=s;
 		document.getElementsByTagName("head")[0].appendChild(newStyleElm);
+		
+		for(var i in this.AnalysisWidgetList)
+		{
+			
+			this.RemoteGetContent(this.AnalysisWidgetList[i]);
+			
+		}
 			
 	},
 	
@@ -65,6 +78,23 @@ WALoader.prototype={
 		return "#"+eleName+" {display:none;}\n";
 	},
 	
+	RemoteGetContent:function(eleName){
+		var ajaxLoader=new AjaxLoader();
+		ajaxLoader.Post(eleName,function(theInnerHtml){
+			
+			document.getElementById(elemName).innerHTML=theInnerHtml;
+			this.ShowAnalysisWidgets(elemName);
+		});
 		
+	},
+	
+	
+	
+	
+
 };
 
+
+
+
+	
