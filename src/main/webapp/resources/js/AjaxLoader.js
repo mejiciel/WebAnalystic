@@ -12,6 +12,7 @@ function AjaxLoader(){
 	  this._loader=new ActiveXObject("Microsoft.XMLHTTP");
 	  }
 	
+	
 };
 
 AjaxLoader.prototype={
